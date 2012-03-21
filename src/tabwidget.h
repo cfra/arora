@@ -77,6 +77,7 @@ class QStackedWidget;
 QT_END_NAMESPACE
 
 class BrowserMainWindow;
+class OpenSearchEngine;
 class TabBar;
 class WebView;
 class WebActionMapper;
@@ -155,7 +156,7 @@ public slots:
     void loadString(const QString &string, OpenUrlIn tab = CurrentTab);
     void loadUrlFromUser(const QUrl &url, const QString &title = QString());
     void loadUrl(const QUrl &url, TabWidget::OpenUrlIn tab = CurrentTab, const QString &title = QString());
-    void performSearch(const QString &term, TabWidget::OpenUrlIn tab = CurrentTab);
+    void performSearch(const QString &term, TabWidget::OpenUrlIn tab = CurrentTab, OpenSearchEngine *engine = NULL);
     void createTab(const QByteArray &historyState, TabWidget::OpenUrlIn tab = CurrentTab);
     void newTab();
     void cloneTab(int index = -1);

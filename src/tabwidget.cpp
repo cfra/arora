@@ -407,8 +407,8 @@ WebView *TabWidget::makeNewTab(bool makeCurrent)
             this, SLOT(webViewTitleChanged(const QString &)));
     connect(webView, SIGNAL(urlChanged(const QUrl &)),
             this, SLOT(webViewUrlChanged(const QUrl &)));
-    connect(webView, SIGNAL(search(const QUrl&, TabWidget::OpenUrlIn)),
-            this, SLOT(loadUrl(const QUrl&, TabWidget::OpenUrlIn)));
+    connect(webView, SIGNAL(search(const QString&, TabWidget::OpenUrlIn, OpenSearchEngine*)),
+            this, SLOT(performSearch(const QString&, TabWidget::OpenUrlIn, OpenSearchEngine*)));
     connect(webView->page(), SIGNAL(windowCloseRequested()),
             this, SLOT(windowCloseRequested()));
     connect(webView->page(), SIGNAL(printRequested(QWebFrame *)),
@@ -950,19 +950,29 @@ void TabWidget::loadUrl(const QUrl &url, OpenUrlIn tab, const QString &title)
 /*
    Somewhere in the browser interface a users wants to search for something.
  */
-void TabWidget::performSearch(const QString &term, OpenUrlIn tab)
+void TabWidget::performSearch(const QString &term, OpenUrlIn tab,
+                              OpenSearchEngine *engine)
 {
+    if (!engine)
+        engine = ToolbarSearch::openSearchManager()->currentEngine();
+
+    if (!engine) {
+        qWarning() << "perfomSearchWithEngine: engine is null";
+        return;
+    }
+
     if (tab == UserOrCurrent) {
         tab = modifyWithUserBehavior(CurrentTab);
     }
 
     WebView *webView = getView(tab, currentWebView());
-    if (webView) {
-        OpenSearchEngine *engine = ToolbarSearch::openSearchManager()->currentEngine();
-        engine->setDelegate(webView);
-        engine->requestSearchResults(term);
-        engine->setDelegate(NULL);
+    if (!webView) {
+        return;
     }
+
+    engine->setDelegate(webView);
+    engine->requestSearchResults(term);
+    engine->setDelegate(NULL);
 }
 
 /*

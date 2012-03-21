@@ -75,6 +75,7 @@ class QLabel;
 #endif
 
 class BrowserMainWindow;
+class OpenSearchEngine;
 class TabWidget;
 class WebPage;
 class WebView : public QWebView, public OpenSearchEngineDelegate
@@ -106,7 +107,9 @@ public:
     TabWidget *tabWidget() const;
 
 signals:
-    void search(const QUrl &searchUrl, TabWidget::OpenUrlIn openIn);
+    void search(const QString &term,
+                TabWidget::OpenUrlIn openIn,
+                OpenSearchEngine *engine);
 
 public slots:
     void zoomIn();

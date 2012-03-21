@@ -411,7 +411,7 @@ void WebView::searchRequested(QAction *action)
 
     if (index.canConvert<QString>()) {
         OpenSearchEngine *engine = ToolbarSearch::openSearchManager()->engine(index.toString());
-        emit search(engine->searchUrl(searchText), TabWidget::NewSelectedTab);
+        emit search(searchText, TabWidget::NewSelectedTab, engine);
     }
 }
 
