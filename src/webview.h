@@ -67,6 +67,7 @@
 #include <qwebview.h>
 
 #include "tabwidget.h"
+#include "opensearchenginedelegate.h"
 
 #if QT_VERSION >= 0x040600 || defined(WEBKIT_TRUNK)
 #include <qwebelement.h>
@@ -76,7 +77,7 @@ class QLabel;
 class BrowserMainWindow;
 class TabWidget;
 class WebPage;
-class WebView : public QWebView
+class WebView : public QWebView, public OpenSearchEngineDelegate
 {
     Q_OBJECT
 
@@ -95,6 +96,9 @@ public:
 #endif
 
     void loadUrl(const QUrl &url, const QString &title = QString());
+    void performSearchRequest(const QNetworkRequest &request,
+                              QNetworkAccessManager::Operation operation,
+                              const QByteArray &data);
     QUrl url() const;
 
     QString lastStatusBarText() const;

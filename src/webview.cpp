@@ -592,6 +592,15 @@ void WebView::loadUrl(const QUrl &url, const QString &title)
     load(url);
 }
 
+void WebView::performSearchRequest(const QNetworkRequest &request,
+		                   QNetworkAccessManager::Operation operation,
+				   const QByteArray &data)
+{
+    emit titleChanged(tr("Loading..."));
+    load(request, operation, data);
+}
+
+
 QString WebView::lastStatusBarText() const
 {
     return m_statusBarText;
