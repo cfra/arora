@@ -189,7 +189,6 @@ private slots:
     void historyCleared();
 
 private:
-    static QUrl guessUrlFromString(const QString &url);
     QLabel *animationLabel(int index, bool addMovie);
     void retranslate();
 

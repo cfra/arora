@@ -810,21 +810,18 @@ void TabWidget::loadString(const QString &string, OpenUrlIn tab)
     if (string.isEmpty())
         return;
 
-    QUrl url = guessUrlFromString(string);
-    loadUrl(url, tab);
-}
-
-QUrl TabWidget::guessUrlFromString(const QString &string)
-{
     OpenSearchManager *manager = ToolbarSearch::openSearchManager();
-    QUrl url = manager->convertKeywordSearchToUrl(string);
-    if (url.isValid())
-        return url;
+    QString terms;
+    OpenSearchEngine *engine = manager->convertKeywordSearch(string, terms);
+    if (engine) {
+        performSearch(terms, tab, engine);
+        return;
+    }
 
 #if QT_VERSION >= 0x040600
-    url = QUrl::fromUserInput(string);
+    QUrl url = QUrl::fromUserInput(string);
 #else
-    url = WebView::guessUrlFromString(string);
+    QUrl url = WebView::guessUrlFromString(string);
 #endif
 
     if (url.scheme() == QLatin1String("about")
@@ -833,21 +830,23 @@ QUrl TabWidget::guessUrlFromString(const QString &string)
 
     // QUrl::isValid() is too much tolerant.
     // We actually want to check if the url conforms to the RFC, which QUrl::isValid() doesn't state.
-    if (!url.scheme().isEmpty() && (!url.host().isEmpty() || !url.path().isEmpty()))
-        return url;
+    if (!url.scheme().isEmpty() && (!url.host().isEmpty() || !url.path().isEmpty())) {
+        loadUrl(url, tab);
+        return;
+    }
 
     QSettings settings;
     settings.beginGroup(QLatin1String("urlloading"));
     bool search = settings.value(QLatin1String("searchEngineFallback"), false).toBool();
 
     if (search) {
-        url = ToolbarSearch::openSearchManager()->currentEngine()->searchUrl(string.trimmed());
-    } else {
-        QString urlString = QLatin1String("http://") + string.trimmed();
-        url = QUrl::fromEncoded(urlString.toUtf8(), QUrl::TolerantMode);
+        performSearch(string.trimmed(), tab);
+        return;
     }
 
-    return url;
+    QString urlString = QLatin1String("http://") + string.trimmed();
+    url = QUrl::fromEncoded(urlString.toUtf8(), QUrl::TolerantMode);
+    loadUrl(url,tab);
 }
 
 /*

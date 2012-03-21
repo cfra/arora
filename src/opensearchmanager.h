@@ -60,7 +60,7 @@ public:
 
     bool engineExists(const QString &name);
 
-    QUrl convertKeywordSearchToUrl(const QString &string);
+    OpenSearchEngine *convertKeywordSearch(const QString &string, QString &terms);
     OpenSearchEngine *engineForKeyword(const QString &keyword) const;
     void setEngineForKeyword(const QString &keyword, OpenSearchEngine *engine);
 
