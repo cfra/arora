@@ -1049,8 +1049,8 @@ void BrowserMainWindow::setupToolBar()
 
     m_toolbarSearch = new ToolbarSearch(m_navigationBar);
     m_navigationSplitter->addWidget(m_toolbarSearch);
-    connect(m_toolbarSearch, SIGNAL(search(const QUrl&, TabWidget::OpenUrlIn)),
-            m_tabWidget, SLOT(loadUrl(const QUrl&, TabWidget::OpenUrlIn)));
+    connect(m_toolbarSearch, SIGNAL(search(const QString&, TabWidget::OpenUrlIn)),
+            m_tabWidget, SLOT(performSearch(const QString&, TabWidget::OpenUrlIn)));
     m_navigationSplitter->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
     m_tabWidget->locationBarStack()->setMinimumWidth(120);
     m_navigationSplitter->setCollapsible(0, false);

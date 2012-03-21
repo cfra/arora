@@ -948,6 +948,24 @@ void TabWidget::loadUrl(const QUrl &url, OpenUrlIn tab, const QString &title)
 }
 
 /*
+   Somewhere in the browser interface a users wants to search for something.
+ */
+void TabWidget::performSearch(const QString &term, OpenUrlIn tab)
+{
+    if (tab == UserOrCurrent) {
+        tab = modifyWithUserBehavior(CurrentTab);
+    }
+
+    WebView *webView = getView(tab, currentWebView());
+    if (webView) {
+        OpenSearchEngine *engine = ToolbarSearch::openSearchManager()->currentEngine();
+        engine->setDelegate(webView);
+        engine->requestSearchResults(term);
+        engine->setDelegate(NULL);
+    }
+}
+
+/*
     Return the view that matches the openIn behavior creating
     a new view/window if necessary.
  */

@@ -267,11 +267,10 @@ void ToolbarSearch::searchNow()
         m_autosaver->changeOccurred();
     }
 
-    QUrl searchUrl = engine->searchUrl(searchText);
     TabWidget::OpenUrlIn tab = TabWidget::CurrentTab;
     if (qApp->keyboardModifiers() == Qt::AltModifier)
         tab = TabWidget::NewSelectedTab;
-    emit search(searchUrl, tab);
+    emit search(searchText, tab);
 }
 
 void ToolbarSearch::newSuggestions(const QStringList &suggestions)

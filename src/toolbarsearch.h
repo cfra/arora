@@ -80,7 +80,7 @@ class ToolbarSearch : public SearchLineEdit
     Q_OBJECT
 
 signals:
-    void search(const QUrl &url, TabWidget::OpenUrlIn tab);
+    void search(const QString &term, TabWidget::OpenUrlIn tab);
 
 public:
     ToolbarSearch(QWidget *parent = 0);
