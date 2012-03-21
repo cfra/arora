@@ -23,14 +23,16 @@
 #include <qpair.h>
 #include <qimage.h>
 #include <qmap.h>
-#include <qnetworkaccessmanager.h>
 #include <qstring.h>
+#include <qstringlist.h>
 #include <qurl.h>
 
+class QNetworkAccessManager;
 class QNetworkReply;
 class QScriptEngine;
 
 class OpenSearchEngineDelegate;
+class OpenSearchEnginePrivate;
 class OpenSearchEngine : public QObject
 {
     Q_OBJECT
@@ -53,8 +55,9 @@ public:
     Q_PROPERTY(QString suggestionsMethod READ suggestionsMethod WRITE setSuggestionsMethod)
     Q_PROPERTY(bool providesSuggestions READ providesSuggestions)
     Q_PROPERTY(QString imageUrl READ imageUrl WRITE setImageUrl)
+    Q_PROPERTY(QStringList tags READ tags WRITE setTags)
     Q_PROPERTY(bool valid READ isValid)
-    Q_PROPERTY(QNetworkAccessManager *networkAccessManager READ networkAccessManager WRITE setNetworkAccessManager)
+    Q_PROPERTY(QNetworkAccessManager* networkAccessManager READ networkAccessManager WRITE setNetworkAccessManager)
 
     OpenSearchEngine(QObject *parent = 0);
     ~OpenSearchEngine();
@@ -93,6 +96,9 @@ public:
     QImage image() const;
     void setImage(const QImage &image);
 
+    QStringList tags() const;
+    void setTags(const QStringList &tags);
+
     bool isValid() const;
 
     QNetworkAccessManager *networkAccessManager() const;
@@ -117,28 +123,7 @@ private slots:
     void suggestionsObtained();
 
 private:
-    QString m_name;
-    QString m_description;
-
-    QString m_imageUrl;
-    QImage m_image;
-
-    QString m_searchUrlTemplate;
-    QString m_suggestionsUrlTemplate;
-    Parameters m_searchParameters;
-    Parameters m_suggestionsParameters;
-    QString m_searchMethod;
-    QString m_suggestionsMethod;
-
-    QMap<QString, QNetworkAccessManager::Operation> m_requestMethods;
-
-    QNetworkAccessManager *m_networkAccessManager;
-    QNetworkReply *m_suggestionsReply;
-
-    QScriptEngine *m_scriptEngine;
-
-    OpenSearchEngineDelegate *m_delegate;
+    OpenSearchEnginePrivate *d;
 };
 
 #endif // OPENSEARCHENGINE_H
-

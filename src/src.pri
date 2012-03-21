@@ -7,7 +7,7 @@ win32|os2 : Debug : CONFIG += console
 INCLUDEPATH += $$PWD
 DEPENDPATH += $$PWD
 
-QT += webkit network
+QT += webkit network script
 
 # Share object files for faster compiling
 RCC_DIR     = $$PWD/.rcc
@@ -30,6 +30,7 @@ FORMS += \
     acceptlanguagedialog.ui \
     downloaditem.ui \
     downloads.ui \
+    opensearchdialog.ui \
     searchbanner.ui \
     settings.ui
 
@@ -46,6 +47,10 @@ HEADERS += \
     downloadmanager.h \
     modelmenu.h \
     modeltoolbar.h \
+    opensearchdialog.h \
+    opensearchengineaction.h \
+    opensearchenginemodel.h \
+    opensearchmanager.h \
     plaintexteditsearch.h \
     searchbar.h \
     searchbutton.h \
@@ -74,6 +79,10 @@ SOURCES += \
     downloadmanager.cpp \
     modelmenu.cpp \
     modeltoolbar.cpp \
+    opensearchdialog.cpp \
+    opensearchengineaction.cpp \
+    opensearchenginemodel.cpp \
+    opensearchmanager.cpp \
     plaintexteditsearch.cpp \
     searchbar.cpp \
     searchbutton.cpp \
@@ -94,7 +103,7 @@ include(bookmarks/bookmarks.pri)
 include(history/history.pri)
 include(locationbar/locationbar.pri)
 include(network/network.pri)
-include(opensearch/opensearch.pri)
+include(opensearch/src/opensearch-nolib.pri)
 include(qwebplugins/qwebplugins.pri)
 include(utils/utils.pri)
 include(useragent/useragent.pri)
