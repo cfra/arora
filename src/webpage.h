@@ -62,7 +62,7 @@ public:
 public slots:
     QString translate(const QString &string);
     QObject *currentEngine() const;
-    QString searchUrl(const QString &string) const;
+    void search(const QString &string) const;
 };
 
 class WebPage : public WebPageProxy

@@ -90,9 +90,20 @@ QObject *JavaScriptAroraObject::currentEngine() const
     return ToolbarSearch::openSearchManager()->currentEngine();
 }
 
-QString JavaScriptAroraObject::searchUrl(const QString &string) const
+void JavaScriptAroraObject::search(const QString &string) const
 {
-    return QString::fromUtf8(ToolbarSearch::openSearchManager()->currentEngine()->searchUrl(string).toEncoded());
+    WebPage *page = qobject_cast<WebPage*>(this->parent());
+    if (!page)
+        return;
+
+    WebView *view = qobject_cast<WebView*>(page->view());
+    if (!view)
+        return;
+
+    OpenSearchEngine *engine = ToolbarSearch::openSearchManager()->currentEngine();
+    engine->setDelegate(view);
+    engine->requestSearchResults(string);
+    engine->setDelegate(0);
 }
 
 WebPage::WebPage(QObject *parent)
